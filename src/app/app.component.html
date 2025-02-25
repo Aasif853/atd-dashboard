@@ -24,6 +24,7 @@
 
   <div class="figure-wrapper">
     <div class="figure">
+      <h3>Using SVG</h3>
       <svg [attr.width]="figureWidth" [attr.height]="figureHeight">
         <circle
           [attr.cx]="getPosition(1).x"
@@ -59,14 +60,19 @@
               [attr.y]="getPosition(line.id).y - 15"
               [attr.font-size]="(figureWidth * 3) / 100"
             >
-              {{ line.sensor?.sensorId }}
+              {{ line.sensor.sensorId }}
             </text>
           </ng-container>
         </ng-container>
       </svg>
     </div>
     <div class="figure">
-      <canvas [attr.width]="figureWidth" [attr.height]="figureHeight"></canvas>
+      <h3>Using Canvas</h3>
+      <canvas
+        #canvasStickFigure
+        [attr.width]="figureWidth"
+        [attr.height]="figureHeight"
+      ></canvas>
     </div>
   </div>
 </main>

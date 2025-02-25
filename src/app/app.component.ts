@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
 @Component({
@@ -7,6 +7,8 @@ import { FormControl, Validators } from '@angular/forms';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  @ViewChild('canvasStickFigure') canvasRef!: ElementRef<HTMLCanvasElement>;
+
   figureWidth = 400;
   figureHeight = 400;
 
@@ -159,6 +161,54 @@ export class AppComponent {
     },
   ];
 
+  ngAfterViewInit(): void {
+    this.drawCanvas();
+  }
+
+  drawCanvas() {
+    const canvas = this.canvasRef.nativeElement;
+
+    const ctx = canvas.getContext('2d')!;
+
+    ctx.clearRect(0, 0, this.figureWidth, this.figureHeight);
+
+    ctx.beginPath();
+
+    const head = this.getPosition(1);
+    const radius = (this.figureWidth * 5) / 100;
+    ctx.arc(head.x, head.y + radius, radius, 0, Math.PI * 2);
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    this.stickFigureLines.forEach((el) => {
+      const from = this.getPosition(el.id);
+      const to = this.getPosition(el.toId);
+
+      ctx.beginPath();
+
+      ctx.moveTo(from.x, from.y);
+      ctx.lineTo(to.x, to.y);
+
+      ctx.stroke();
+
+      if (el.sensor) {
+        ctx.beginPath();
+        ctx.arc(from.x, from.y, (this.figureWidth * 2) / 100, 0, Math.PI * 2);
+        ctx.strokeStyle = 'black';
+        ctx.fillStyle = this.getSensorFill(el.sensor.sensorId);
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.fill();
+
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = 'black';
+        ctx.fillText(el.sensor.sensorId.toString(), from.x, from.y);
+      }
+    });
+  }
+
   getPosition(id: number) {
     const lineJoint = this.stickFigureLines.find((el) => el.id == id)!;
 
@@ -183,10 +233,7 @@ export class AppComponent {
     }
 
     this.sensorStatus = this.sensorInput.value?.toUpperCase().split('')!;
-    console.log(
-      '🚀 ~ AppComponent ~ updateSensors ~ sensorStatus:',
-      this.sensorStatus
-    );
+    this.drawCanvas();
   }
 }
 

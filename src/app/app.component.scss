@@ -43,7 +43,7 @@
   .figure-wrapper {
     display: grid;
     gap: 10px;
-
+    text-align: center;
     grid-template-columns: 1fr 1fr;
     .figure {
       border: 1px solid #ccc;

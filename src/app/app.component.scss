@@ -1,0 +1,53 @@
+.content {
+  display: grid;
+
+  margin: 20px auto;
+  justify-content: center;
+  gap: 10px;
+
+  // .header {
+  //   display: flex;
+  //   flex-direction: column;
+  //   gap: 10px;
+  // }
+
+  .form-fields {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    input {
+      padding: 10px 20px;
+      marging: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      flex-grow: 1;
+    }
+
+    button {
+      padding: 10px 20px;
+      marging: 10px;
+      cursor: pointer;
+      color: white;
+      background-color: dodgerblue;
+      border-radius: 6px;
+      border: none;
+    }
+  }
+
+  .error-message {
+    color: red;
+    font-size: 12px;
+  }
+
+  .figure-wrapper {
+    display: grid;
+    gap: 10px;
+
+    grid-template-columns: 1fr 1fr;
+    .figure {
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+  }
+}

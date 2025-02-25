@@ -1,0 +1,72 @@
+<main class="content">
+  <div class="header">
+    <h2>ATD Dashboard</h2>
+    <div class="form-fields">
+      <input
+        type="text"
+        placeholder="Enter 9 Characters ( G, R & Y)"
+        maxlength="9"
+        [formControl]="sensorInput"
+      />
+      <button (click)="updateSensors()">Update Sensors</button>
+    </div>
+  </div>
+
+  <div
+    class="error-message"
+    *ngIf="
+      sensorInput.touched &&
+      (sensorInput.hasError('required') || sensorInput.hasError('pattern'))
+    "
+  >
+    Invalid input!, Please enter valid characted G, R or Y ( max 9 characters )
+  </div>
+
+  <div class="figure-wrapper">
+    <div class="figure">
+      <svg [attr.width]="figureWidth" [attr.height]="figureHeight">
+        <circle
+          [attr.cx]="getPosition(1).x"
+          [attr.cy]="getPosition(1).y + (figureWidth * 5) / 100"
+          [attr.r]="(figureWidth * 5) / 100"
+          fill="none"
+          stroke="black"
+          stroke-width="2"
+        />
+        <ng-container *ngFor="let line of stickFigureLines">
+          <line
+            [attr.x1]="getPosition(line.id).x"
+            [attr.y1]="getPosition(line.id).y"
+            [attr.x2]="getPosition(line.toId).x"
+            [attr.y2]="getPosition(line.toId).y"
+            x2="100"
+            y2="20"
+            stroke="black"
+            stroke-width="2"
+          />
+
+          <ng-container *ngIf="line.sensor">
+            <circle
+              [attr.cx]="getPosition(line.id).x"
+              [attr.cy]="getPosition(line.id).y"
+              [attr.r]="(figureWidth * 2) / 100"
+              [attr.fill]="getSensorFill(line.sensor.sensorId)"
+              stroke="black"
+              stroke-width="2"
+            />
+            <text
+              [attr.x]="getPosition(line.id).x + 5"
+              [attr.y]="getPosition(line.id).y - 15"
+              [attr.font-size]="(figureWidth * 3) / 100"
+            >
+              {{ line.sensor?.sensorId }}
+            </text>
+          </ng-container>
+        </ng-container>
+      </svg>
+    </div>
+    <div class="figure">
+      <canvas [attr.width]="figureWidth" [attr.height]="figureHeight"></canvas>
+    </div>
+  </div>
+</main>
